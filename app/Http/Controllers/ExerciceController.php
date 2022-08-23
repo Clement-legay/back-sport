@@ -162,6 +162,6 @@ class ExerciceController extends Controller
     {
         $exercice = Exercice::find($id);
 
-        return response()->json(['muscles' => $exercice->muscles->get()], 200);
+        return response()->json(['muscles' => $exercice->muscles()->get()], 200);
     }
 }
