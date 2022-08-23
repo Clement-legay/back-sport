@@ -19,7 +19,12 @@ class Exercice extends Model
 
     public function muscles()
     {
-        return $this->hasManyThrough(Muscle::class, ExerciceRelation::class)->get();
+        return $this->hasManyThrough(Muscle::class, ExerciceRelation::class);
+    }
+
+    public function muscle($id)
+    {
+        return $this->muscles()->where('muscle_id', $id)->first();
     }
 
     public function assignToMuscle($muscle)
@@ -35,9 +40,9 @@ class Exercice extends Model
     public function discardMuscles($muscle = null)
     {
         if ($muscle) {
-            $this->muscles()->detach($muscle->id);
+            $this->muscle($muscle->id)->delete();
         } else {
-            $this->muscles()->detach();
+            $this->muscles()->delete();
         }
     }
 }
