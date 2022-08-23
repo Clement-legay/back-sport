@@ -41,9 +41,11 @@ class ExerciceController extends Controller
             'description' => 'required|string|max:255',
             'fat_burn' => 'integer',
             'level' => 'integer',
-            'type' => 'string|max:255',
+            'type' => 'required|string|max:255',
             'muscles' => 'required|array',
         ]);
+
+        return response()->json(['message' => 'ran past the validation.'], 200);
 
         $exercice = new Exercice(
             [
