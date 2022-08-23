@@ -26,7 +26,7 @@ class Exercice extends Model
 
     public function muscleRelations()
     {
-        return $this->hasMany(ExerciceRelation::class);
+        return $this->hasMany(ExerciceRelation::class, 'exercice_id');
     }
 
     public function muscleRelation($id)
