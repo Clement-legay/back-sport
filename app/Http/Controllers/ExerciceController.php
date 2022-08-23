@@ -38,11 +38,6 @@ class ExerciceController extends Controller
     {
         return response()->json(['message' => $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'fat_burn' => 'integer',
-            'level' => 'integer',
-            'type' => 'required|string|max:255',
-            'muscles' => 'required|array',
         ])], 200);
 
 
