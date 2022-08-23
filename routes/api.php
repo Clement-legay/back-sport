@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BodyZoneController;
+use App\Http\Controllers\ExerciceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/exercice/{id}', [BodyZoneController::class, 'show'])->name('exercices.show');
+Route::get('/exercice/{id}', [ExerciceController::class, 'show'])->name('exercices.show');
