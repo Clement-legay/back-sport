@@ -127,13 +127,10 @@ class ExerciceController extends Controller
                 $exercice->type = $request->get('type');
             }
 
-
-            if ($request->get('muscles') != null) {
-                $exercice->discardMuscles();
-                foreach (json_decode($request->get('muscles')) as $muscle) {
-                    $muscle = Muscle::find($muscle);
-                    $exercice->assignToMuscle($muscle);
-                }
+            $exercice->discardMuscles();
+            foreach (json_decode($request->get('muscles')) as $muscle) {
+                $muscle = Muscle::find($muscle);
+                $exercice->assignToMuscle($muscle);
             }
 
             $exercice->save();
