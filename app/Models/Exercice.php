@@ -24,27 +24,32 @@ class Exercice extends Model
         return $this->hasManyThrough(Muscle::class, ExerciceRelation::class, 'muscle_id', 'id');
     }
 
-    public function muscle($id)
+    public function muscleRelations()
     {
-        return $this->muscles()->where('muscle_id', $id)->first();
+        return $this->hasMany(ExerciceRelation::class);
     }
 
-//    public function assignToMuscle($muscle)
-//    {
-//        $exerciceRelation = new ExerciceRelation([
-//            'exercice_id' => $this->id,
-//            'muscle_id' => $muscle->id,
-//        ]);
-//
-//        $exerciceRelation->save();
-//    }
-//
-//    public function discardMuscles($muscle = null)
-//    {
-//        if ($muscle) {
-//            $this->muscle($muscle->id)->delete();
-//        } else {
-//            $this->muscles()->delete();
-//        }
-//    }
+    public function muscleRelation($id)
+    {
+        return $this->hasMany(ExerciceRelation::class, 'exercice_id')->where('muscle_id', $id);
+    }
+
+    public function assignToMuscle($muscle)
+    {
+        $exerciceRelation = new ExerciceRelation([
+            'exercice_id' => $this->id,
+            'muscle_id' => $muscle->id,
+        ]);
+
+        $exerciceRelation->save();
+    }
+
+    public function discardMuscles($muscle = null)
+    {
+        if ($muscle) {
+            $this->muscleRelation($muscle->id)->delete();
+        } else {
+            $this->muscleRelations()->delete();
+        }
+    }
 }
