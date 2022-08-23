@@ -12,6 +12,10 @@ class BodyZone extends Model
     protected $fillable = [
         'name',
         'description',
+        'upper_body',
+        'region',
+        'creator_id',
+        'updater_id',
     ];
 
     public function muscles()

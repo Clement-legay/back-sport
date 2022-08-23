@@ -39,12 +39,20 @@ class BodyZoneController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'upper_body' => 'required|boolean',
+            'region' => 'required|string|max:255',
+            'creator_id' => 'integer',
+            'updater_id' => 'integer',
         ]);
 
         $bodyZone = new BodyZone(
             [
                 'name' => $request->get('name'),
                 'description' => $request->get('description'),
+                'upper_body' => $request->get('upper_body'),
+                'region' => $request->get('region'),
+                'creator_id' => $request->get('creator_id'),
+                'updater_id' => $request->get('updater_id'),
             ]
         );
         $bodyZone->save();
@@ -88,6 +96,10 @@ class BodyZoneController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'upper_body' => 'required|boolean',
+            'region' => 'required|string|max:255',
+            'creator_id' => 'integer',
+            'updater_id' => 'integer',
         ]);
 
         $bodyZone = BodyZone::find($id);
@@ -99,6 +111,10 @@ class BodyZoneController extends Controller
                 [
                     'name' => $request->get('name'),
                     'description' => $request->get('description'),
+                    'upper_body' => $request->get('upper_body'),
+                    'region' => $request->get('region'),
+                    'creator_id' => $request->get('creator_id'),
+                    'updater_id' => $request->get('updater_id'),
                 ]
             );
 
