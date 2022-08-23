@@ -24,6 +24,6 @@ class Exercice extends Model
 
     public function assignToMuscle($muscle)
     {
-        $this->muscles()->attach($muscle);
+        $this->muscles()->attach($muscle, ['ercice_id' => $this->id]);
     }
 }
