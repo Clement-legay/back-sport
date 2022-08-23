@@ -57,7 +57,7 @@ class ExerciceController extends Controller
 
         $exercice->save();
 
-        foreach ($request->get('muscles') as $muscle) {
+        foreach (json_decode($request->get('muscles'), true) as $muscle) {
             $muscle = Muscle::find($muscle);
             $exercice->muscles()->attach($muscle);
         }
