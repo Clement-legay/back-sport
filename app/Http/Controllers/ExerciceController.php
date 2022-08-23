@@ -70,8 +70,6 @@ class ExerciceController extends Controller
      */
     public function show($id)
     {
-        return response()->json(['exercice' => 'ui'], 200);
-
         $exercice = Exercice::find($id);
         if ($exercice == null) {
             return response()->json(['message' => 'Exercice not found.'], 404);
