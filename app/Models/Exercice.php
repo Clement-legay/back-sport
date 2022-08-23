@@ -49,7 +49,7 @@ class Exercice extends Model
         if ($muscle) {
             $this->muscleRelation($muscle->id)->delete();
         } else {
-            $this->muscleRelations()->delete();
+            $this->muscleRelations()->get()->delete();
         }
     }
 }
