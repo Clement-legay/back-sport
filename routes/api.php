@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/exercice/{id}', [ExerciceController::class, 'show'])->name('exercices.show');
+
+Route::post('/body-zone', [BodyZoneController::class, 'store'])->name('body-zones.store');
+Route::get('/body-zone/{id}', [BodyZoneController::class, 'show'])->name('body-zones.show');
