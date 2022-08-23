@@ -111,11 +111,8 @@ class ExerciceController extends Controller
         if ($exercice == null) {
             return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
-            $exercice->name = $request->get('name');
-            $exercice->description = $request->get('description');
-            $exercice->fat_burn = $request->get('fat_burn');
-            $exercice->level = $request->get('level');
-            $exercice->type = $request->get('type');
+            $exercice->updateIfChanged($request->all());
+
             $exercice->save();
 
             $exercice->discardMuscles();
