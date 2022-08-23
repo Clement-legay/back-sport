@@ -19,6 +19,11 @@ class Exercice extends Model
 
     public function muscles()
     {
-        return $this->hasManyThrough(Muscle::class, ExerciceRelation::class);
+        return $this->hasManyThrough(Muscle::class, ExerciceRelation::class)->get();
+    }
+
+    public function assignToMuscle($muscle)
+    {
+        $this->muscles()->attach($muscle);
     }
 }

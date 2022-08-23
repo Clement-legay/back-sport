@@ -59,7 +59,7 @@ class ExerciceController extends Controller
 
         foreach (json_decode($request->get('muscles'), true) as $muscle) {
             $muscle = Muscle::find($muscle);
-            $exercice->muscles()->attach($muscle);
+            $exercice->assignToMuscle($muscle);
         }
 
         return response()->json(['message' => 'Body zone created successfully.'], 201);
