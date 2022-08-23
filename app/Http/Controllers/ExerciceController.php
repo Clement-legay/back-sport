@@ -70,11 +70,11 @@ class ExerciceController extends Controller
      */
     public function show($id)
     {
-        $bodyZone = BodyZone::find($id);
-        if ($bodyZone == null) {
-            return response()->json(['message' => 'Body zone not found.'], 404);
+        $exercice = Exercice::find($id);
+        if ($exercice == null) {
+            return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
-            return response()->json(['bodyZone' => $bodyZone], 200);
+            return response()->json(['exercice' => $exercice], 200);
         }
     }
 
@@ -99,23 +99,31 @@ class ExerciceController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'fat_burn' => 'required|integer',
+            'level' => 'required|integer',
+            'type' => 'required|string|max:255',
+            'muscles' => 'required|array',
         ]);
 
-        $bodyZone = BodyZone::find($id);
+        $exercice = Exercice::find($id);
 
-        if ($bodyZone == null) {
-            return response()->json(['message' => 'Body zone not found.'], 404);
+        if ($exercice == null) {
+            return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
-            $bodyZone->update(
-                [
-                    'name' => $request->get('name'),
-                    'description' => $request->get('description'),
-                ]
-            );
+            $exercice->name = $request->get('name');
+            $exercice->description = $request->get('description');
+            $exercice->fat_burn = $request->get('fat_burn');
+            $exercice->level = $request->get('level');
+            $exercice->type = $request->get('type');
+            $exercice->save();
 
-            $bodyZone->save();
+            $exercice->muscles()->detach();
 
-            return response()->json(['message' => 'Body zone updated successfully.'], 200);
+            foreach ($request->get('muscles') as $muscle) {
+                $exercice->muscles()->attach($muscle);
+            }
+
+            return response()->json(['message' => 'Exercice updated successfully.'], 200);
         }
     }
 
@@ -126,14 +134,12 @@ class ExerciceController extends Controller
      */
     public function destroy($id)
     {
-        $bodyZone = BodyZone::find($id);
-
-        if ($bodyZone == null) {
-            return response()->json(['message' => 'Body zone not found.'], 404);
+        $exercice = Exercice::find($id);
+        if ($exercice == null) {
+            return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
-            $bodyZone->delete();
-
-            return response()->json(['message' => 'Body zone deleted successfully.'], 200);
+            $exercice->delete();
+            return response()->json(['message' => 'Exercice deleted successfully.'], 200);
         }
     }
 }
