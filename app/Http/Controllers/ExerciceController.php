@@ -36,18 +36,14 @@ class ExerciceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->muscles = json_decode($request->get('muscles'));
-
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'fat_burn' => 'integer',
             'level' => 'integer',
             'type' => 'required|string|max:255',
-            'muscles' => 'required|array',
+            'muscles' => 'required',
         ]);
-
-        return response()->json(['message' => 'ran past the validation.'], 200);
 
         $exercice = new Exercice(
             [
