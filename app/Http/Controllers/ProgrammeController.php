@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Muscle;
+use App\Models\Programme;
 use Illuminate\Http\Request;
 
 class ProgrammeController extends Controller
@@ -31,22 +32,50 @@ class ProgrammeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                // between 1 and 7
+                'days_in_week' => 'required|integer|between:1,7',
+                'focus' => 'required|string|max:255',
+                'exercices' => 'required|array',
+                'duration_goal' => 'required|integer',
+                'user_id' => 'required|integer',
+            ]
+        );
+
+        $programme = new Programme(
+            [
+                'days_in_week' => $request->get('days_in_week'),
+                'focus' => $request->get('focus'),
+                'exercices' => $request->get('exercices'),
+                'duration_goal' => $request->get('duration_goal'),
+                'user_id' => $request->get('user_id'),
+            ]
+        );
+
+        $programme->save();
+
+        return response()->json(['message' => 'Programme created successfully.'], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Muscle $muscle)
+    public function show($id)
     {
-        //
+        $programme = Programme::find($id);
+
+        if ($programme == null) {
+            return response()->json(['message' => 'Programme not found.'], 404);
+        } else {
+            return response()->json(['programme' => $programme], 200);
+        }
     }
 
     /**
@@ -64,22 +93,46 @@ class ProgrammeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Muscle $muscle)
+    public function update(Request $request, $id)
     {
-        //
+        $programme = Programme::find($id);
+
+        if ($programme == null) {
+            return response()->json(['message' => 'Programme not found.'], 404);
+        } else {
+            $programme->update(
+                [
+                    'days_in_week' => $request->get('days_in_week'),
+                    'focus' => $request->get('focus'),
+                    'exercices' => $request->get('exercices'),
+                    'duration_goal' => $request->get('duration_goal'),
+                    'user_id' => $request->get('user_id'),
+                ]
+            );
+
+            $programme->save();
+
+            return response()->json(['message' => 'Programme updated successfully.'], 200);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Muscle $muscle)
+    public function destroy($id)
     {
-        //
+        $programme = Programme::find($id);
+
+        if ($programme == null) {
+            return response()->json(['message' => 'Programme not found.'], 404);
+        } else {
+            $programme->delete();
+
+            return response()->json(['message' => 'Programme deleted successfully.'], 200);
+        }
     }
 }

@@ -31,31 +31,55 @@ class MuscleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'body_zone_id' => 'required|integer',
+            'creator_id' => 'integer',
+            'updater_id' => 'integer',
+        ]);
+
+        $muscle = new Muscle(
+            [
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+                'body_zone_id' => $request->get('body_zone_id'),
+                'creator_id' => $request->get('creator_id'),
+                'updater_id' => $request->get('updater_id'),
+            ]
+        );
+
+        $muscle->save();
+
+        return response()->json(['message' => 'Muscle created successfully.'], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Muscle $muscle)
+    public function show($id)
     {
-        //
+        $muscle = Muscle::find($id);
+        if ($muscle == null) {
+            return response()->json(['message' => 'Muscle not found.'], 404);
+        } else {
+            return response()->json(['muscle' => $muscle], 200);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Muscle $muscle)
+    public function edit($id)
     {
         //
     }
@@ -64,22 +88,54 @@ class MuscleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Muscle $muscle)
+    public function update(Request $request, $id)
     {
-        //
+        $muscle = Muscle::find($id);
+
+        if ($muscle == null) {
+            return response()->json(['message' => 'Muscle not found.'], 404);
+        } else {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+                'body_zone_id' => 'required|integer',
+                'creator_id' => 'integer',
+                'updater_id' => 'integer',
+            ]);
+
+            $muscle->update(
+                [
+                    'name' => $request->get('name'),
+                    'description' => $request->get('description'),
+                    'body_zone_id' => $request->get('body_zone_id'),
+                    'creator_id' => $request->get('creator_id'),
+                    'updater_id' => $request->get('updater_id'),
+                ]
+            );
+
+            $muscle->save();
+
+            return response()->json(['message' => 'Muscle updated successfully.'], 200);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Muscle $muscle)
+    public function destroy($id)
     {
-        //
+        $muscle = Muscle::find($id);
+
+        if ($muscle == null) {
+            return response()->json(['message' => 'Muscle not found.'], 404);
+        } else {
+            $muscle->delete();
+
+            return response()->json(['message' => 'Muscle deleted successfully.'], 200);
+        }
     }
 }
