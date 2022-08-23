@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('exercices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('weight')->nullable();
-            $table->enum('will', ['increase', 'decrease', 'stay'])->default('stay');
-            $table->rememberToken();
+            $table->string('description')->nullable();
+            $table->integer('fat_burn')->nullable();
+            $table->enum('level', ['beginner', 'intermediate', 'master'])->nullable();
+            $table->enum('type', ['strength', 'flexibility', 'balance', 'calisthenics', 'cardio'])->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('exercices');
     }
 };
