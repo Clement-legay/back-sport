@@ -99,11 +99,11 @@ class ExerciceController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'name' => 'string|max:255',
+            'description' => 'string|max:255',
             'fat_burn' => 'integer',
             'level' => 'integer',
-            'type' => 'required|string|max:255',
+            'type' => 'string|max:255',
         ]);
 
         $exercice = Exercice::find($id);
