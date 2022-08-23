@@ -111,16 +111,32 @@ class ExerciceController extends Controller
         if ($exercice == null) {
             return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
-            $exercice->updateIfChanged($request->all());
+            if ($request->get('name') != null) {
+                $exercice->name = $request->get('name');
+            }
+            if ($request->get('description') != null) {
+                $exercice->description = $request->get('description');
+            }
+            if ($request->get('fat_burn') != null) {
+                $exercice->fat_burn = $request->get('fat_burn');
+            }
+            if ($request->get('level') != null) {
+                $exercice->level = $request->get('level');
+            }
+            if ($request->get('type') != null) {
+                $exercice->type = $request->get('type');
+            }
+            if ($request->get('muscles') != null) {
+                $exercice->discardMuscles();
+
+                foreach (json_decode($request->get('muscles')) as $muscle) {
+                    $muscle = Muscle::find($muscle);
+                    $exercice->assignToMuscle($muscle);
+                }
+
+            }
 
             $exercice->save();
-
-            $exercice->discardMuscles();
-
-            foreach (json_decode($request->get('muscles')) as $muscle) {
-                $muscle = Muscle::find($muscle);
-                $exercice->assignToMuscle($muscle);
-            }
 
             return response()->json(['message' => 'Exercice updated successfully.'], 200);
         }
