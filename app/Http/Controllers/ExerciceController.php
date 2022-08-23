@@ -126,6 +126,9 @@ class ExerciceController extends Controller
             if ($request->get('type') != null) {
                 $exercice->type = $request->get('type');
             }
+
+            return response()->json(['message' => 'Exercice updated successfully.'], 200);
+
             if ($request->get('muscles') != null) {
                 $exercice->discardMuscles();
 
@@ -138,7 +141,6 @@ class ExerciceController extends Controller
 
             $exercice->save();
 
-            return response()->json(['message' => 'Exercice updated successfully.'], 200);
         }
     }
 

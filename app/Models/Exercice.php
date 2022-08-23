@@ -37,7 +37,7 @@ class Exercice extends Model
         $exerciceRelation->save();
     }
 
-    public function discardMuscles($muscle = null)
+    public function discardFromMuscles($muscle = null)
     {
         if ($muscle) {
             $this->muscle($muscle->id)->delete();
