@@ -49,7 +49,9 @@ class Exercice extends Model
         if ($muscle) {
             $this->muscleRelation($muscle->id)->delete();
         } else {
-            $this->muscleRelations()->get()->delete();
+            foreach ($this->muscleRelations()->get() as $muscleRelation) {
+                $muscleRelation->delete();
+            }
         }
     }
 }
