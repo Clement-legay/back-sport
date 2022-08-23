@@ -32,6 +32,7 @@ Route::group(['as' => 'body-zones.', 'prefix' => 'body-zones'], function () {
 
 Route::group(['as' => 'workouts.', 'prefix' => 'workouts'], function () {
     Route::get('/{id}/get', [ExerciceController::class, 'show'])->name('show');
+    Route::get('/{id}/muscles', [ExerciceController::class, 'muscles'])->name('muscles');
     Route::post('/create', [ExerciceController::class, 'store'])->name('store');
     Route::put('/{id}/update', [ExerciceController::class, 'update'])->name('update');
     Route::delete('/{id}/delete', [ExerciceController::class, 'destroy'])->name('destroy');

@@ -157,4 +157,11 @@ class ExerciceController extends Controller
             return response()->json(['message' => 'Exercice deleted successfully.'], 200);
         }
     }
+
+    public function muscles($id)
+    {
+        $exercice = Exercice::find($id);
+
+        return response()->json(['muscles' => $exercice->muscles->get()], 200);
+    }
 }

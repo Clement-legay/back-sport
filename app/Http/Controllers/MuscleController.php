@@ -8,26 +8,6 @@ use Illuminate\Http\Request;
 class MuscleController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -71,17 +51,6 @@ class MuscleController extends Controller
         } else {
             return response()->json(['muscle' => $muscle], 200);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Muscle  $muscle
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
