@@ -128,6 +128,9 @@ class ExerciceController extends Controller
             }
 
             $exercice->discardMuscles();
+
+            return response()->json(['message' => $exercice->muscleRelations()], 200);
+
             foreach (json_decode($request->get('muscles')) as $muscle) {
                 $muscle = Muscle::find($muscle);
                 $exercice->assignToMuscle($muscle);
