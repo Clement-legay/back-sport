@@ -135,7 +135,6 @@ class ExerciceController extends Controller
 
             $exercice->save();
 
-            return response()->json(['message' => $exercice->muscleRelations()->get()], 200);
             return response()->json(['message' => 'Exercice updated successfully.'], 200);
         }
     }
