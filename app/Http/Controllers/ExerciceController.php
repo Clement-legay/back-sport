@@ -130,7 +130,6 @@ class ExerciceController extends Controller
 
             if ($request->get('muscles') != null) {
                 $exercice->discardMuscles();
-            return response()->json(['message' => 'Exercice updated successfully.'], 200);
 
                 foreach (json_decode($request->get('muscles')) as $muscle) {
                     $muscle = Muscle::find($muscle);
