@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exercice;
+use App\Models\Muscle;
 use Illuminate\Http\Request;
 
 class ExerciceController extends Controller
@@ -35,6 +36,8 @@ class ExerciceController extends Controller
      */
     public function store(Request $request)
     {
+        return response()->json(['message' => 'Exercice created successfully.'], 201);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -57,6 +60,7 @@ class ExerciceController extends Controller
         $exercice->save();
 
         foreach ($request->get('muscles') as $muscle) {
+            $muscle = Muscle::find($muscle);
             $exercice->muscles()->attach($muscle);
         }
 
