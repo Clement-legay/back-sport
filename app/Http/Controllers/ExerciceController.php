@@ -104,9 +104,10 @@ class ExerciceController extends Controller
             'fat_burn' => 'required|integer',
             'level' => 'required|integer',
             'type' => 'required|string|max:255',
-            'muscles' => 'required|array',
         ]);
+
         $exercice = Exercice::find($id);
+
         if ($exercice == null) {
             return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
@@ -116,10 +117,14 @@ class ExerciceController extends Controller
             $exercice->level = $request->get('level');
             $exercice->type = $request->get('type');
             $exercice->save();
-            $exercice->muscles()->detach();
-            foreach ($request->get('muscles') as $muscle) {
-                $exercice->muscles()->attach($muscle);
+
+            $exercice->discardMuscles();
+
+            foreach (json_decode($request->get('muscles')) as $muscle) {
+                $muscle = Muscle::find($muscle);
+                $exercice->assignToMuscle($muscle);
             }
+
             return response()->json(['message' => 'Exercice updated successfully.'], 200);
         }
     }

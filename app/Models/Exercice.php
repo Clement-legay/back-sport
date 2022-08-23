@@ -24,6 +24,20 @@ class Exercice extends Model
 
     public function assignToMuscle($muscle)
     {
-        $this->muscles()->attach($muscle, ['ercice_id' => $this->id]);
+        $exerciceRelation = new ExerciceRelation([
+            'exercice_id' => $this->id,
+            'muscle_id' => $muscle->id,
+        ]);
+
+        $exerciceRelation->save();
+    }
+
+    public function discardMuscles($muscle = null)
+    {
+        if ($muscle) {
+            $this->muscles()->detach($muscle->id);
+        } else {
+            $this->muscles()->detach();
+        }
     }
 }
