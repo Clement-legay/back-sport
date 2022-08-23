@@ -36,6 +36,9 @@ class ExerciceController extends Controller
      */
     public function store(Request $request)
     {
+        $ansswer = json_decode($request->get('muscles'));
+        return response()->json($ansswer, 201);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
