@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $exercice = Exercice::find(3);
-    $muscles = $exercice->muscleRelations()->get();
+    $exercice = Exercice::find(7);
+    $muscles = $exercice->muscles()->get();
     dd($muscles);
 });
