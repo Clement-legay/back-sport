@@ -75,6 +75,6 @@ Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
 
 Route::group(['as' => 'medias.', 'prefix' => 'medias'], function () {
     Route::post('{reference_type}/create', [MediaController::class, 'store'])->name('create');
-    Route::delete('{reference_type}/{reference_id}/delete', [MediaController::class, 'destroy'])->name('destroy');
-    Route::patch('{reference_type}/{reference_id}/change_order', [MediaController::class, 'changeOrder'])->name('changeOrder');
+    Route::delete('{reference_type}/{id}/delete', [MediaController::class, 'destroy'])->name('destroy');
+    Route::patch('{reference_type}/{id}/change_order', [MediaController::class, 'changeOrder'])->name('changeOrder');
 });
