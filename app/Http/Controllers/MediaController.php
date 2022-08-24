@@ -19,7 +19,7 @@ class MediaController extends Controller
         $request->validate([
             'reference_id' => 'required|integer',
             'media_type' => 'required|string|max:255',
-            'media_path' => 'required|string|max:255',
+            'media_file' => 'required',
             'creator_id' => 'integer',
             'updater_id' => 'integer',
         ]);
