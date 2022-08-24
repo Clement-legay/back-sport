@@ -86,8 +86,7 @@ class MediaController extends Controller
         return response()->json(['success' => 'Media uploaded'], 200);
     }
 
-    private function getResult($reference_type, $id)
-    {
+    public function changeOrder(Request $request, $id, $reference_type) {
         if ($reference_type == 'body_zone') {
             $result = BodyZoneMedia::find($id);
         } else if ($reference_type == 'muscle') {
@@ -95,14 +94,8 @@ class MediaController extends Controller
         } else if ($reference_type == 'exercice') {
             $result = ExerciceMedia::find($id);
         } else {
-            return false;
+            return response()->json(['error' => 'Invalid reference type'], 400);
         }
-
-        return $result;
-    }
-
-    public function changeOrder(Request $request, $id, $reference_type) {
-        $result = $this->getResult($reference_type, $id);
         if ($result) {
             $result->order = $request->get('order');
             $result->save();
@@ -113,7 +106,15 @@ class MediaController extends Controller
     }
 
     public function destroy($id, $reference_type) {
-        $result = $this->getResult($reference_type, $id);
+        if ($reference_type == 'exercice') {
+            $result = ExerciceMedia::find($id);
+        } else if ($reference_type == 'body_zone') {
+            $result = BodyZoneMedia::find($id);
+        } else if ($reference_type == 'muscle') {
+            $result = MuscleMedia::find($id);
+        } else {
+            return response()->json(['error' => 'Invalid reference type'], 400);
+        }
         if ($result) {
             Storage::disk('public')->delete($result->media_path);
             $result->delete();
