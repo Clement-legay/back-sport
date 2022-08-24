@@ -65,6 +65,15 @@ class ExerciceController extends Controller
         return response()->json(['message' => 'Body zone created successfully.'], 201);
     }
 
+    public function getAll()
+    {
+        $page = request('page') ?? 1;
+        $limit = request('limit') ?? 10;
+
+        $exercices = Exercice::skip(($page - 1) * $limit)->take($limit)->get();
+        return response()->json(['workouts' => $exercices]);
+    }
+
     /**
      * Display the specified resource.
      *

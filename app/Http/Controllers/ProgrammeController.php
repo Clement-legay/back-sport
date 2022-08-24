@@ -62,6 +62,15 @@ class ProgrammeController extends Controller
         return response()->json(['message' => 'Programme created successfully.'], 201);
     }
 
+    public function getAll()
+    {
+        $page = request('page') ?? 1;
+        $limit = request('limit') ?? 10;
+
+        $programmes = Programme::skip(($page - 1) * $limit)->take($limit)->get();
+        return response()->json(['programmes' => $programmes]);
+    }
+
     /**
      * Display the specified resource.
      *

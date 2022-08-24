@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['as' => 'body-zones.', 'prefix' => 'body-zones'], function () {
+    Route::get('/get', [BodyZoneController::class, 'getAll'])->name('getAll');
+
     Route::get('/{id}/get', [BodyZoneController::class, 'show'])->name('show');
     Route::post('/create', [BodyZoneController::class, 'store'])->name('store');
     Route::put('/{id}/update', [BodyZoneController::class, 'update'])->name('update');
@@ -31,6 +33,8 @@ Route::group(['as' => 'body-zones.', 'prefix' => 'body-zones'], function () {
 });
 
 Route::group(['as' => 'workouts.', 'prefix' => 'workouts'], function () {
+    Route::get('/get', [ExerciceController::class, 'getAll'])->name('getAll');
+
     Route::get('/{id}/get', [ExerciceController::class, 'show'])->name('show');
     Route::get('/{id}/muscles', [ExerciceController::class, 'muscles'])->name('muscles');
     Route::post('/create', [ExerciceController::class, 'store'])->name('store');
@@ -39,6 +43,8 @@ Route::group(['as' => 'workouts.', 'prefix' => 'workouts'], function () {
 });
 
 Route::group(['as' => 'muscles.', 'prefix' => 'muscles'], function () {
+    Route::get('/get', [MuscleController::class, 'getAll'])->name('getAll');
+
     Route::get('/{id}/get', [MuscleController::class, 'show'])->name('show');
     Route::post('/create', [MuscleController::class, 'store'])->name('store');
     Route::put('/{id}/update', [MuscleController::class, 'update'])->name('update');
@@ -46,6 +52,8 @@ Route::group(['as' => 'muscles.', 'prefix' => 'muscles'], function () {
 });
 
 Route::group(['as' => 'programmes.', 'prefix' => 'programmes'], function () {
+    Route::get('/get', [ProgrammeController::class, 'getAll'])->name('getAll');
+
     Route::get('/{id}/get', [ProgrammeController::class, 'show'])->name('show');
     Route::post('/create', [ProgrammeController::class, 'store'])->name('store');
     Route::put('/{id}/update', [ProgrammeController::class, 'update'])->name('update');
@@ -53,6 +61,8 @@ Route::group(['as' => 'programmes.', 'prefix' => 'programmes'], function () {
 });
 
 Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
+    Route::get('/get', [UserController::class, 'getAll'])->name('getAll');
+
     Route::get('/{id}/get', [UserController::class, 'show'])->name('show');
     Route::post('/create', [UserController::class, 'store'])->name('store');
     Route::put('/{id}/update', [UserController::class, 'update'])->name('update');

@@ -59,6 +59,15 @@ class UserController extends Controller
         return response()->json($user, 201);
     }
 
+    public function getAll()
+    {
+        $page = request('page') ?? 1;
+        $limit = request('limit') ?? 10;
+
+        $users = User::skip(($page - 1) * $limit)->take($limit)->get();
+        return response()->json(['users' => $users]);
+    }
+
     /**
      * Display the specified resource.
      *

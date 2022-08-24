@@ -38,6 +38,15 @@ class MuscleController extends Controller
         return response()->json(['message' => 'Muscle created successfully.'], 201);
     }
 
+    public function getAll()
+    {
+        $page = request('page') ?? 1;
+        $limit = request('limit') ?? 10;
+
+        $muscles = Muscle::skip(($page - 1) * $limit)->take($limit)->get();
+        return response()->json(['muscles' => $muscles]);
+    }
+
     /**
      * Display the specified resource.
      *
