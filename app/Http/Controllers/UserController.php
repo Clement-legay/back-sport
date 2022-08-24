@@ -95,18 +95,28 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found.'], 404);
         } else {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'name' => 'string|max:255',
+                'email' => 'string|email|max:255|unique:users,email,' . $user->id,
                 'password' => 'sometimes|string|min:6|confirmed',
                 'weight' => 'integer',
-                'will' => 'required|string|max:255',
+                'will' => 'string|max:255',
             ]);
 
-            $user->name = $request->get('name');
-            $user->email = $request->get('email');
-            $user->password = bcrypt($request->get('password'));
-            $user->weight = $request->get('weight');
-            $user->will = $request->get('will');
+            if ($request->get('name') != null) {
+                $user->name = $request->get('name');
+            }
+            if ($request->get('email') != null) {
+                $user->email = $request->get('email');
+            }
+            if ($request->get('password') != null) {
+                $user->password = bcrypt($request->get('password'));
+            }
+            if ($request->get('weight') != null) {
+                $user->weight = $request->get('weight');
+            }
+            if ($request->get('will') != null) {
+                $user->will = $request->get('will');
+            }
 
             $user->save();
 

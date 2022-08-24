@@ -94,10 +94,10 @@ class BodyZoneController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'upper_body' => 'required|boolean',
-            'region' => 'required|string|max:255',
+            'name' => 'string|max:255',
+            'description' => 'string|max:255',
+            'upper_body' => 'boolean',
+            'region' => 'string|max:255',
             'creator_id' => 'integer',
             'updater_id' => 'integer',
         ]);
@@ -107,16 +107,25 @@ class BodyZoneController extends Controller
         if ($bodyZone == null) {
             return response()->json(['message' => 'Body zone not found.'], 404);
         } else {
-            $bodyZone->update(
-                [
-                    'name' => $request->get('name'),
-                    'description' => $request->get('description'),
-                    'upper_body' => $request->get('upper_body'),
-                    'region' => $request->get('region'),
-                    'creator_id' => $request->get('creator_id'),
-                    'updater_id' => $request->get('updater_id'),
-                ]
-            );
+            if ($request->get('name') != null) {
+                $bodyZone->name = $request->get('name');
+            }
+            if ($request->get('description') != null) {
+                $bodyZone->description = $request->get('description');
+            }
+            if ($request->get('upper_body') != null) {
+                $bodyZone->upper_body = $request->get('upper_body');
+            }
+            if ($request->get('region') != null) {
+                $bodyZone->region = $request->get('region');
+            }
+            if ($request->get('creator_id') != null) {
+                $bodyZone->creator_id = $request->get('creator_id');
+            }
+            if ($request->get('updater_id') != null) {
+                $bodyZone->updater_id = $request->get('updater_id');
+            }
+
 
             $bodyZone->save();
 

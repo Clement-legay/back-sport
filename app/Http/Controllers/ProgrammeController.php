@@ -102,15 +102,27 @@ class ProgrammeController extends Controller
         if ($programme == null) {
             return response()->json(['message' => 'Programme not found.'], 404);
         } else {
-            $programme->update(
+            $request->validate(
                 [
-                    'days_in_week' => $request->get('days_in_week'),
-                    'focus' => $request->get('focus'),
-                    'exercices' => $request->get('exercices'),
-                    'duration_goal' => $request->get('duration_goal'),
-                    'user_id' => $request->get('user_id'),
+                    'days_in_week' => 'integer|between:1,7',
+                    'focus' => 'string|max:255',
+                    'exercices' => 'array',
+                    'duration_goal' => 'integer',
                 ]
             );
+
+            if ($request->get('days_in_week') != null) {
+                $programme->days_in_week = $request->get('days_in_week');
+            }
+            if ($request->get('focus') != null) {
+                $programme->focus = $request->get('focus');
+            }
+            if ($request->get('exercices') != null) {
+                $programme->exercices = $request->get('exercices');
+            }
+            if ($request->get('duration_goal') != null) {
+                $programme->duration_goal = $request->get('duration_goal');
+            }
 
             $programme->save();
 

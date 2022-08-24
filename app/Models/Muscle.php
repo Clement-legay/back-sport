@@ -13,6 +13,8 @@ class Muscle extends Model
         'name',
         'description',
         'body_zone_id',
+        'creator_id',
+        'updater_id',
     ];
 
     public function exercices()
