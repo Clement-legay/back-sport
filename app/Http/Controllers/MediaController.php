@@ -33,7 +33,7 @@ class MediaController extends Controller
                 $image = str_replace(' ', '+', $image);
                 $imageName = $reference_type . '/' . Str::random(35) . '.' . $extension;
 
-                $media_file = Storage::disk('public')->putFile($imageName, base64_decode($image));
+                $media_file = Storage::disk('public')->put($imageName, base64_decode($image));
             } else {
                 return response()->json(['error' => 'Only images are allowed for now'], 400);
             }
