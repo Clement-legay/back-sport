@@ -91,9 +91,11 @@ class BodyZoneController extends Controller
         if ($bodyZone == null) {
             return response()->json(['message' => 'Body zone not found.'], 404);
         } else {
-            $bodyZoneMedia = $bodyZone->media()->orderBy('order', 'asc')->get();
-
-            return response()->json(['medias' => $bodyZoneMedia], 200);
+            $media = $bodyZone->media()->orderBy('order', 'asc')->get();
+            foreach ($media as $mediaItem) {
+                $mediaItem->media_path = asset('storage/' . $mediaItem->media_path);
+            }
+            return response()->json(['medias' => $media], 200);
         }
     }
 

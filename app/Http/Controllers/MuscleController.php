@@ -70,7 +70,9 @@ class MuscleController extends Controller
             return response()->json(['message' => 'Muscle not found.'], 404);
         } else {
             $media = $muscle->media()->orderBy('created_at', 'desc')->get();
-
+            foreach ($media as $mediaItem) {
+                $mediaItem->media_path = asset('storage/' . $mediaItem->media_path);
+            }
             return response()->json(['medias' => $media], 200);
         }
     }

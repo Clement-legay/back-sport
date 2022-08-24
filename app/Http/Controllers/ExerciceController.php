@@ -97,6 +97,10 @@ class ExerciceController extends Controller
         } else {
             $media = $exercice->media()->orderBy('order', 'asc')->get();
 
+            foreach ($media as $mediaItem) {
+                $mediaItem->media_path = asset('storage/' . $mediaItem->media_path);
+            }
+
             return response()->json(['medias' => $media], 200);
         }
     }
