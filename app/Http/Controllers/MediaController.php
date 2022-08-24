@@ -116,7 +116,7 @@ class MediaController extends Controller
             return response()->json(['error' => 'Invalid reference type'], 400);
         }
         if ($result) {
-            Storage::disk('public')->delete($result->media_path);
+            unlink(public_path('storage/' . $result->media_path));
             $result->delete();
             return response()->json(['success' => 'Media deleted'], 200);
         } else {
