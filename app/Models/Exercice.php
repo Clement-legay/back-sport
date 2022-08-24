@@ -21,7 +21,7 @@ class Exercice extends Model
 
     public function muscles()
     {
-        return $this->hasManyThrough(Muscle::class, ExerciceRelation::class, 'id', 'id', 'id', 'muscle_id');
+        return $this->hasManyThrough(Muscle::class, ExerciceRelation::class, 'exercice_id', 'id', 'id', 'muscle_id');
     }
 
     public function muscleRelations()

@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $exercice = Exercice::find(7);
+Route::get('/search/{id}', function ($id) {
+    $exercice = Exercice::find($id);
+    dump($exercice);
+    $relations = $exercice->muscleRelations()->get();
+    dump($relations);
     $muscles = $exercice->muscles()->get();
     dd($muscles);
 });
