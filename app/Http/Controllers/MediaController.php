@@ -106,7 +106,6 @@ class MediaController extends Controller
     }
 
     public function destroy($reference_type, $id) {
-        dd($reference_type, $id);
         if ($reference_type == 'exercice') {
             $result = ExerciceMedia::find($id);
         } else if ($reference_type == 'body_zone') {
