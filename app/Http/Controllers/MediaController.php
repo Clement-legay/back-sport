@@ -47,7 +47,7 @@ class MediaController extends Controller
                 [
                     'body_zone_id' => $request->get('reference_id'),
                     'media_type' => $request->get('media_type'),
-                    'media_path' => $media_file,
+                    'media_path' => $imageName,
                     'creator_id' => $request->get('creator_id') ?? null,
                     'updater_id' => $request->get('updater_id') ?? null,
                     'order' => $body_zone->orderMedia(),
@@ -59,7 +59,7 @@ class MediaController extends Controller
                 [
                     'muscle_id' => $request->get('reference_id'),
                     'media_type' => $request->get('media_type'),
-                    'media_path' => $media_file,
+                    'media_path' => $imageName,
                     'creator_id' => $request->get('creator_id') ?? null,
                     'updater_id' => $request->get('updater_id') ?? null,
                     'order' => $muscle->orderMedia(),
@@ -71,7 +71,7 @@ class MediaController extends Controller
                 [
                     'exercice_id' => $request->get('reference_id'),
                     'media_type' => $request->get('media_type'),
-                    'media_path' => $media_file,
+                    'media_path' => $imageName,
                     'creator_id' => $request->get('creator_id') ?? null,
                     'updater_id' => $request->get('updater_id') ?? null,
                     'order' => $exercice->orderMedia(),
@@ -112,7 +112,7 @@ class MediaController extends Controller
         }
     }
 
-    public function delete($id, $reference_type) {
+    public function destroy($id, $reference_type) {
         $result = $this->getResult($reference_type, $id);
         if ($result) {
             Storage::disk('public')->delete($result->media_path);
