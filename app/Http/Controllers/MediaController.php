@@ -86,7 +86,7 @@ class MediaController extends Controller
         return response()->json(['success' => 'Media uploaded'], 200);
     }
 
-    public function changeOrder(Request $request, $id, $reference_type) {
+    public function changeOrder(Request $request, $reference_type, $id) {
         if ($reference_type == 'body_zone') {
             $result = BodyZoneMedia::find($id);
         } else if ($reference_type == 'muscle') {
@@ -105,7 +105,7 @@ class MediaController extends Controller
         }
     }
 
-    public function destroy($id, $reference_type) {
+    public function destroy($reference_type, $id) {
         dd($reference_type);
         if ($reference_type == 'exercice') {
             $result = ExerciceMedia::find($id);
