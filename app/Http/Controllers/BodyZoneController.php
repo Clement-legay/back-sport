@@ -85,6 +85,18 @@ class BodyZoneController extends Controller
         }
     }
 
+    public function getMedia($id) {
+        $bodyZone = BodyZone::find($id);
+
+        if ($bodyZone == null) {
+            return response()->json(['message' => 'Body zone not found.'], 404);
+        } else {
+            $bodyZoneMedia = $bodyZone->media()->orderBy('order', 'asc')->get();
+
+            return response()->json(['medias' => $bodyZoneMedia], 200);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

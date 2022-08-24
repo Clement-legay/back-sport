@@ -52,4 +52,15 @@ class Exercice extends Model
             $this->muscleRelations()->delete();
         }
     }
+
+    public function media()
+    {
+        return $this->hasMany(ExerciceMedia::class);
+    }
+
+    public function orderMedia()
+    {
+        $count = $this->media()->count();
+        return $count;
+    }
 }

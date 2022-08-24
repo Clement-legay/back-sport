@@ -22,4 +22,15 @@ class BodyZone extends Model
     {
         return $this->hasMany(Muscle::class)->get();
     }
+
+    public function media()
+    {
+        return $this->hasMany(BodyZoneMedia::class);
+    }
+
+    public function orderMedia()
+    {
+        $count = $this->media()->count();
+        return $count;
+    }
 }

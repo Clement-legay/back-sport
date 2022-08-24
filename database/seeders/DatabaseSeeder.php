@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
 //        DB::table('body_zones')->delete();
 
         User::factory(10)->create();
+        BodyZone::factory(10)->create();
         Muscle::factory(10)->create();
         Exercice::factory(10)->create();
         ExerciceRelation::factory(10)->create();
-        BodyZone::factory(10)->create();
     }
 }

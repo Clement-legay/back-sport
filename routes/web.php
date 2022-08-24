@@ -22,3 +22,8 @@ Route::get('/search/{id}', function ($id) {
     $muscles = $exercice->muscles()->get();
     dd($muscles);
 });
+
+Route::get('/', function () {
+    $body_zone = \App\Models\Muscle::find(3);
+    dd($body_zone->orderMedia());
+});

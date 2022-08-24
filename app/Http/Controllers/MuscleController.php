@@ -62,6 +62,19 @@ class MuscleController extends Controller
         }
     }
 
+    public function getMedia($id)
+    {
+        $muscle = Muscle::find($id);
+
+        if ($muscle == null) {
+            return response()->json(['message' => 'Muscle not found.'], 404);
+        } else {
+            $media = $muscle->media()->orderBy('created_at', 'desc')->get();
+
+            return response()->json(['medias' => $media], 200);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

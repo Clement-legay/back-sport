@@ -89,6 +89,18 @@ class ExerciceController extends Controller
         }
     }
 
+    public function getMedia($id)
+    {
+        $exercice = Exercice::find($id);
+        if ($exercice == null) {
+            return response()->json(['message' => 'Exercice not found.'], 404);
+        } else {
+            $media = $exercice->media()->orderBy('order', 'asc')->get();
+
+            return response()->json(['medias' => $media], 200);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

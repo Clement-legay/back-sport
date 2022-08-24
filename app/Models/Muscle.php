@@ -26,4 +26,15 @@ class Muscle extends Model
     {
         return $this->belongsTo(BodyZone::class)->first();
     }
+
+    public function media()
+    {
+        return $this->hasMany(MuscleMedia::class);
+    }
+
+    public function orderMedia()
+    {
+        $count = $this->media()->count();
+        return $count;
+    }
 }
