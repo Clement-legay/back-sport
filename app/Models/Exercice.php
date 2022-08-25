@@ -15,6 +15,7 @@ class Exercice extends Model
         'fat_burn',
         'level',
         'type',
+        'thumbnail_path',
         'creator_id',
         'updater_id',
     ];

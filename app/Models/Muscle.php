@@ -13,6 +13,7 @@ class Muscle extends Model
         'name',
         'description',
         'body_zone_id',
+        'thumbnail_path',
         'creator_id',
         'updater_id',
     ];

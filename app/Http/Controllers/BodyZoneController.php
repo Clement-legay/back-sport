@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BodyZone;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BodyZoneController extends Controller
 {
@@ -41,9 +43,12 @@ class BodyZoneController extends Controller
             'description' => 'required|string|max:255',
             'upper_body' => 'required|boolean',
             'region' => 'required|string|max:255',
+            'thumbnail' => 'required',
             'creator_id' => 'integer',
             'updater_id' => 'integer',
         ]);
+
+        $imageName = MediaController::setMedia($request->get('thumbnail'), 'thumbnails/body_zone');
 
         $bodyZone = new BodyZone(
             [
@@ -51,6 +56,7 @@ class BodyZoneController extends Controller
                 'description' => $request->get('description'),
                 'upper_body' => $request->get('upper_body'),
                 'region' => $request->get('region'),
+                'thumbnail_path' => $imageName,
                 'creator_id' => $request->get('creator_id'),
                 'updater_id' => $request->get('updater_id'),
             ]
@@ -149,11 +155,22 @@ class BodyZoneController extends Controller
             if ($request->get('updater_id') != null) {
                 $bodyZone->updater_id = $request->get('updater_id');
             }
+            if ($request->get('thumbnail') != null) {
+                $imageName = MediaController::setMedia($request->get('thumbnail'), 'thumbnails/body_zone');
 
+                if ($imageName) {
+                    unlink(public_path('storage/' . $bodyZone->thumbnail_path));
+                    $bodyZone->thumbnail_path = $imageName;
+                }
+            }
 
             $bodyZone->save();
 
-            return response()->json(['message' => 'Body zone updated successfully.'], 200);
+            if (isset($imageName) && !$imageName) {
+                return response()->json(['message' => 'Body zone updated successfully but thumbnail update failed.'], 200);
+            } else {
+                return response()->json(['message' => 'Body zone updated successfully.'], 200);
+            }
         }
     }
 
@@ -169,6 +186,11 @@ class BodyZoneController extends Controller
         if ($bodyZone == null) {
             return response()->json(['message' => 'Body zone not found.'], 404);
         } else {
+            unlink(public_path('storage/' . $bodyZone->thumbnail_path));
+            foreach ($bodyZone->media as $media) {
+                unlink(public_path('storage/' . $media->media_path));
+            }
+
             $bodyZone->delete();
 
             return response()->json(['message' => 'Body zone deleted successfully.'], 200);

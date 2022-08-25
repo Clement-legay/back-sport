@@ -14,6 +14,7 @@ class BodyZone extends Model
         'description',
         'upper_body',
         'region',
+        'thumbnail_path',
         'creator_id',
         'updater_id',
     ];

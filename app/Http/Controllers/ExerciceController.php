@@ -41,15 +41,19 @@ class ExerciceController extends Controller
             'description' => 'required|string|max:255',
             'fat_burn' => 'integer',
             'level' => 'integer',
+            'thumbnail' => 'required',
             'type' => 'required|string|max:255',
             'muscles' => 'required',
         ]);
+
+        $imageName = MediaController::setMedia($request->get('thumbnail'), 'thumbnails/exercice');
 
         $exercice = new Exercice(
             [
                 'name' => $request->get('name'),
                 'description' => $request->get('description'),
                 'fat_burn' => $request->get('fat_burn'),
+                'thumbnail_path' => $imageName,
                 'level' => $request->get('level'),
                 'type' => $request->get('type'),
             ]
@@ -151,6 +155,14 @@ class ExerciceController extends Controller
             if ($request->get('type') != null) {
                 $exercice->type = $request->get('type');
             }
+            if ($request->get('thumbnail') != null) {
+                $imageName = MediaController::setMedia($request->get('thumbnail'), 'thumbnails/exercice');
+
+                if ($imageName) {
+                    unlink(public_path('storage/' . $exercice->thumbnail_path));
+                    $exercice->thumbnail_path = $imageName;
+                }
+            }
 
             $exercice->discardMuscles();
             foreach (json_decode($request->get('muscles')) as $muscle) {
@@ -160,8 +172,11 @@ class ExerciceController extends Controller
 
             $exercice->save();
 
-            return response()->json(['message' => $exercice->muscleRelations()->get()], 200);
-            return response()->json(['message' => 'Exercice updated successfully.'], 200);
+            if (isset($imageName) && !$imageName) {
+                return response()->json(['message' => 'Exercice updated successfully but thumbnail update failed.'], 200);
+            } else {
+                return response()->json(['message' => 'Exercice updated successfully.'], 200);
+            }
         }
     }
 
@@ -176,6 +191,11 @@ class ExerciceController extends Controller
         if ($exercice == null) {
             return response()->json(['message' => 'Exercice not found.'], 404);
         } else {
+            unlink(public_path('storage/' . $exercice->thumbnail_path));
+            foreach ($exercice->media as $media) {
+                unlink(public_path('storage/' . $media->media_path));
+            }
+
             $exercice->delete();
             return response()->json(['message' => 'Exercice deleted successfully.'], 200);
         }

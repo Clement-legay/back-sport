@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Muscle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MuscleController extends Controller
 {
@@ -19,15 +21,19 @@ class MuscleController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'body_zone_id' => 'required|integer',
+            'thumbnail' => 'required',
             'creator_id' => 'integer',
             'updater_id' => 'integer',
         ]);
+
+        $imageName = MediaController::setMedia($request->get('thumbnail'), 'thumbnails/muscle');
 
         $muscle = new Muscle(
             [
                 'name' => $request->get('name'),
                 'description' => $request->get('description'),
                 'body_zone_id' => $request->get('body_zone_id'),
+                'thumbnail_path' => $imageName,
                 'creator_id' => $request->get('creator_id'),
                 'updater_id' => $request->get('updater_id'),
             ]
@@ -98,19 +104,37 @@ class MuscleController extends Controller
                 'updater_id' => 'integer',
             ]);
 
-            $muscle->update(
-                [
-                    'name' => $request->get('name'),
-                    'description' => $request->get('description'),
-                    'body_zone_id' => $request->get('body_zone_id'),
-                    'creator_id' => $request->get('creator_id'),
-                    'updater_id' => $request->get('updater_id'),
-                ]
-            );
+            if ($request->get('name') != null) {
+                $muscle->name = $request->get('name');
+            }
+            if ($request->get('description') != null) {
+                $muscle->description = $request->get('description');
+            }
+            if ($request->get('body_zone_id') != null) {
+                $muscle->body_zone_id = $request->get('body_zone_id');
+            }
+            if ($request->get('creator_id') != null) {
+                $muscle->creator_id = $request->get('creator_id');
+            }
+            if ($request->get('updater_id') != null) {
+                $muscle->updater_id = $request->get('updater_id');
+            }
+            if ($request->get('thumbnail') != null) {
+                $imageName = MediaController::setMedia($request->get('thumbnail'), 'thumbnails/muscle');
+
+                if ($imageName) {
+                    unlink(public_path('storage/' . $muscle->thumbnail_path));
+                    $muscle->thumbnail_path = $imageName;
+                }
+            }
 
             $muscle->save();
 
-            return response()->json(['message' => 'Muscle updated successfully.'], 200);
+            if (isset($imageName) && !$imageName) {
+                return response()->json(['message' => 'Muscle updated successfully but thumbnail update failed.'], 200);
+            } else {
+                return response()->json(['message' => 'Muscle updated successfully.'], 200);
+            }
         }
     }
 
@@ -126,6 +150,11 @@ class MuscleController extends Controller
         if ($muscle == null) {
             return response()->json(['message' => 'Muscle not found.'], 404);
         } else {
+            unlink(public_path('storage/' . $muscle->thumbnail_path));
+            foreach ($muscle->media as $media) {
+                unlink(public_path('storage/' . $media->media_path));
+            }
+
             $muscle->delete();
 
             return response()->json(['message' => 'Muscle deleted successfully.'], 200);
