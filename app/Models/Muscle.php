@@ -20,7 +20,7 @@ class Muscle extends Model
 
     public function exercices()
     {
-        return $this->hasMany(Exercice::class);
+        return $this->hasManyThrough(Exercice::class, ExerciceRelation::class, 'muscle_id', 'id', 'id', 'exercice_id');
     }
 
     public function bodyZone()
