@@ -83,6 +83,18 @@ class MuscleController extends Controller
         }
     }
 
+    public function getWorkouts($id)
+    {
+        $muscle = Muscle::find($id);
+
+        if ($muscle == null) {
+            return response()->json(['message' => 'Muscle not found.'], 404);
+        } else {
+            $workouts = $muscle->exercices()->orderBy('name', 'asc')->get();
+            return response()->json(['workouts' => $workouts], 200);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

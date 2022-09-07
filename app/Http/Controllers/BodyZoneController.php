@@ -105,6 +105,17 @@ class BodyZoneController extends Controller
         }
     }
 
+    public function getMuscles($id) {
+        $bodyZone = BodyZone::find($id);
+
+        if ($bodyZone == null) {
+            return response()->json(['message' => 'Body zone not found.'], 404);
+        } else {
+            $muscles = $bodyZone->muscles()->orderBy('name', 'asc')->get();
+            return response()->json(['muscles' => $muscles], 200);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

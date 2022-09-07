@@ -29,6 +29,7 @@ Route::group(['as' => 'body-zones.', 'prefix' => 'body-zones'], function () {
 
     Route::get('/{id}/get', [BodyZoneController::class, 'show'])->name('show');
     Route::get('/{id}/get-media', [BodyZoneController::class, 'getMedia'])->name('getMedia');
+    Route::get('/{id}/muscles', [BodyZoneController::class, 'getMuscles'])->name('getMuscles');
     Route::post('/create', [BodyZoneController::class, 'store'])->name('store');
     Route::put('/{id}/update', [BodyZoneController::class, 'update'])->name('update');
     Route::delete('/{id}/delete', [BodyZoneController::class, 'destroy'])->name('destroy');
@@ -50,6 +51,7 @@ Route::group(['as' => 'muscles.', 'prefix' => 'muscles'], function () {
 
     Route::get('/{id}/get', [MuscleController::class, 'show'])->name('show');
     Route::get('/{id}/get-media', [MuscleController::class, 'getMedia'])->name('getMedia');
+    Route::get('/{id}/workouts', [MuscleController::class, 'getWorkouts'])->name('getWorkouts');
     Route::post('/create', [MuscleController::class, 'store'])->name('store');
     Route::put('/{id}/update', [MuscleController::class, 'update'])->name('update');
     Route::delete('/{id}/delete', [MuscleController::class, 'destroy'])->name('destroy');
