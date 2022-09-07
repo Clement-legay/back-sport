@@ -90,7 +90,7 @@ class MuscleController extends Controller
         if ($muscle == null) {
             return response()->json(['message' => 'Muscle not found.'], 404);
         } else {
-            $workouts = $muscle->exercices()->orderBy('updated_at', 'desc')->get();
+            $workouts = $muscle->exercices()->get();
             return response()->json(['workouts' => $workouts], 200);
         }
     }

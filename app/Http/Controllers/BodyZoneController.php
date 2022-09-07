@@ -111,7 +111,7 @@ class BodyZoneController extends Controller
         if ($bodyZone == null) {
             return response()->json(['message' => 'Body zone not found.'], 404);
         } else {
-            $muscles = $bodyZone->muscles()->orderBy('updated_at', 'desc')->get();
+            $muscles = $bodyZone->muscles()->get();
             return response()->json(['muscles' => $muscles], 200);
         }
     }
