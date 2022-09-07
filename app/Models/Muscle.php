@@ -20,7 +20,7 @@ class Muscle extends Model
 
     public function exercices()
     {
-        return $this->hasMany(Exercice::class)->get();
+        return $this->hasMany(Exercice::class);
     }
 
     public function bodyZone()

@@ -21,7 +21,7 @@ class BodyZone extends Model
 
     public function muscles()
     {
-        return $this->hasMany(Muscle::class)->get();
+        return $this->hasMany(Muscle::class);
     }
 
     public function media()
