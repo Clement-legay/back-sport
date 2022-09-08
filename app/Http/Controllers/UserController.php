@@ -54,6 +54,8 @@ class UserController extends Controller
             ]
         );
 
+        $user->sendVerificationEmail();
+
         $user->save();
 
         return response()->json($user, 201);
