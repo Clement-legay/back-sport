@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Muscle;
 use App\Models\User;
+use App\Models\VerificationToken;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -28,25 +31,69 @@ class UserController extends Controller
         //
     }
 
+    public function verify($token): \Illuminate\Http\RedirectResponse
+    {
+        $verificationToken = VerificationToken::where('token', base64_decode($token))->first();
+
+
+        if ($verificationToken->isValid()) {
+            $user = User::where('remember_token', )->first();
+
+            if ($user) {
+                if ($user->email_verified_at == null) {
+                $user->email_verified_at = now();
+                $user->save();
+                dd('your account is verified');
+                } else {
+                    dd('your account is already verified');
+                }
+            }
+
+            dd('user not found');
+        } else {
+            dd('token expired');
+        }
+
+    }
+
+    public function rememberTokenCheck(Request $request)
+    {
+        $rememberToken = $request->get('remember_token');
+        $rememberToken = JWT::decode($rememberToken, new Key(env('JWT_SECRET'), 'HS256'));
+
+        if ($rememberToken->exp > time()) {
+            $user = User::where('remember_token', $rememberToken->token)->first();
+            // generate a new remember token
+            $user->generateRememberToken();
+            return response()->json(['user' => $user, 'remember_token' => $user->rememberToken()]);
+        } else {
+            return response()->json(['message' => 'token is invalid']);
+        }
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
             'weight' => 'integer',
             'will' => 'required|string|max:255',
         ]);
 
-        $user = new User(
+
+        $user = User::create(
             [
-                'name' => $request->get('name'),
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->get('last_name'),
                 'email' => $request->get('email'),
                 'password' => bcrypt($request->get('password')),
                 'weight' => $request->get('weight'),
@@ -68,6 +115,27 @@ class UserController extends Controller
 
         $users = User::skip(($page - 1) * $limit)->take($limit)->get();
         return response()->json(['users' => $users]);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (auth()->attempt($credentials, true)) {
+            $user = auth()->user();
+            if ($user->email_verified_at == null) {
+                return response()->json(['message' => 'Please verify your email.'], 401);
+            } else {
+                $token = $user->rememberToken();
+
+                return response()->json([
+                    'user' => $user,
+                    'remember_token' => $token,
+                ]);
+            }
+        } else {
+            return response()->json(['message' => 'Invalid credentials.'], 401);
+        }
     }
 
     /**

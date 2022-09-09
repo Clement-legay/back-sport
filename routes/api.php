@@ -70,7 +70,9 @@ Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
     Route::get('/get', [UserController::class, 'getAll'])->name('getAll');
 
     Route::get('/{id}/get', [UserController::class, 'show'])->name('show');
-    Route::post('/create', [UserController::class, 'store'])->name('store');
+    Route::post('/register', [UserController::class, 'register'])->name('register');
+    Route::post('/login', [UserController::class, 'login'])->name('login');
+    Route::post('/remember', [UserController::class, 'rememberTokenCheck'])->name('remember');
     Route::put('/{id}/update', [UserController::class, 'update'])->name('update');
     Route::delete('/{id}/delete', [UserController::class, 'destroy'])->name('destroy');
 });

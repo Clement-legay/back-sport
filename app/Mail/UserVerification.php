@@ -2,10 +2,13 @@
 
 namespace App\Mail;
 
+use App\Models\User;
+use App\Models\VerificationToken;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class UserVerification extends Mailable
 {
@@ -16,9 +19,9 @@ class UserVerification extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -28,6 +31,19 @@ class UserVerification extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        $user = $this->user;
+        $token = new VerificationToken(
+            [
+                'user_id' => $user->id,
+                'token' => Str::random(32),
+                'expires_at' => now()->addHour(),
+            ]
+        );
+
+        $token->save();
+
+        $this->subject('Confirm your account');
+
+        return $this->view('mail.mailVerification', compact('user', 'token'));
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Mail\UserVerification;
+use Firebase\JWT\JWT;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -18,7 +21,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'weight',
@@ -49,5 +53,21 @@ class User extends Authenticatable
     public function sendVerificationEmail()
     {
         Mail::to($this->email)->send(new UserVerification($this));
+    }
+
+    public function rememberToken()
+    {
+        return JWT::encode(
+            [
+                'token' => $this->remember_token,
+                'iat' => time(),
+                'exp' => time() + 60 * 60 * 24 * 7,
+            ], env('JWT_SECRET'), 'HS256');
+    }
+
+    public function generateRememberToken()
+    {
+        $this->remember_token = bin2hex(random_bytes(32));
+        $this->save();
     }
 }
