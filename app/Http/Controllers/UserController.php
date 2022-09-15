@@ -121,6 +121,8 @@ class UserController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        return response()->json($credentials);
+
         if (auth()->attempt($credentials, true)) {
             $user = auth()->user();
             if ($user->email_verified_at == null) {
