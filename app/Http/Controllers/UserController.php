@@ -58,6 +58,8 @@ class UserController extends Controller
 
     public function rememberTokenCheck(Request $request)
     {
+        return response()->json(['token' => $request->get('remember_token')]);
+
         $rememberToken = $request->get('remember_token');
         $rememberToken = JWT::decode($rememberToken, new Key(env('JWT_SECRET'), 'HS256'));
 
