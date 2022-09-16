@@ -103,9 +103,12 @@ class UserController extends Controller
 
         $user->sendVerificationEmail();
 
+        $user->generateRememberToken();
+        $token = $user->rememberToken();
+
         $user->save();
 
-        return response()->json($user, 201);
+        return response()->json(['user' => $user, 'remember_token', $token], 201);
     }
 
     public function getAll()
