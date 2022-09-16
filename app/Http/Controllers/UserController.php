@@ -59,16 +59,18 @@ class UserController extends Controller
     public function rememberTokenCheck(Request $request)
     {
         $rememberToken = $request->get('remember_token');
-        $rememberToken = JWT::decode($rememberToken, new Key(env('JWT_SECRET'), 'HS256'));
+        if ($rememberToken) {
+            $rememberToken = JWT::decode($rememberToken, new Key(env('JWT_SECRET'), 'HS256'));
 
-        if ($rememberToken->exp > time()) {
-            $user = User::where('remember_token', $rememberToken->token)->first();
-            // generate a new remember token
-            $user->generateRememberToken();
-            return response()->json(['user' => $user, 'remember_token' => $user->rememberToken()]);
-        } else {
-            return response()->json(['message' => 'token is invalid']);
+            if ($rememberToken->exp > time()) {
+                $user = User::where('remember_token', $rememberToken->token)->first();
+                // generate a new remember token
+                $user->generateRememberToken();
+                return response()->json(['user' => $user, 'remember_token' => $user->rememberToken()]);
+            }
         }
+        return response()->json(['message' => 'token is invalid'], 401);
+
     }
 
 
