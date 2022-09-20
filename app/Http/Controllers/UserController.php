@@ -87,10 +87,9 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'weight' => 'integer',
+            'will' => 'string|max:255',
         ]);
-
-        return response()->json(['data' => $request->all()]);
-
 
         $user = User::create(
             [
