@@ -82,15 +82,13 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        return response()->json(['message' => 'register']);
-
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'weight' => 'integer',
-            'will' => 'required|string|max:255',
+            'will' => 'string|max:255',
         ]);
 
 
