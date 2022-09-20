@@ -82,16 +82,14 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        return response()->json(['data' => $request->all()]);
-
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'weight' => 'integer',
-            'will' => 'string|max:255',
         ]);
+
+        return response()->json(['data' => $request->all()]);
 
 
         $user = User::create(
