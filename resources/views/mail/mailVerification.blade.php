@@ -80,6 +80,22 @@
             color: inherit !important;
             text-decoration: none !important;
         }
+        .codeChar {
+            padding: 8px;
+            color: black;
+            background: white;
+            border: 1px solid black;
+            font-weight: bold;
+        }
+        .codeContainer {
+            text-align: center;
+            width: 100%;
+        }
+        .separator {
+            color: white;
+            font-weight: bold;
+            user-select: none;
+        }
 
         table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: underline; } @media (max-width: 480px) { #u_row_1 .v-row-columns-background-color-background-color { background-color: #000000 !important; } #u_content_image_1 .v-src-width { width: auto !important; } #u_content_image_1 .v-src-max-width { max-width: 100% !important; } #u_content_heading_1 .v-font-size { font-size: 21px !important; } #u_content_text_1 .v-container-padding-padding { padding: 0px 25px 20px !important; } #u_content_button_1 .v-container-padding-padding { padding: 20px 10px 60px !important; } #u_content_button_1 .v-size-width { width: 65% !important; } #u_row_2 .v-row-background-color { background-color: #ffffff !important; } #u_row_2.v-row-background-color { background-color: #ffffff !important; } #u_content_text_2 .v-color { color: #000000 !important; } }
     </style>
@@ -159,7 +175,7 @@
 
                                                 <div class="v-color" style="color: #ffffff; line-height: 160%; text-align: center; word-wrap: break-word;">
                                                     <p style="font-size: 14px; line-height: 160%;">Confirm your account</p>
-                                                    <p style="font-size: 14px; line-height: 160%;">just be clicking the link below.</p>
+                                                    <p style="font-size: 14px; line-height: 160%;">The requested code you need to confirm your account is down below.</p>
                                                 </div>
 
                                             </td>
@@ -171,15 +187,15 @@
                                         <tbody>
                                         <tr>
                                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 10px 120px;font-family:'Montserrat',sans-serif;" align="left">
-
-                                                <div align="center">
-                                                    <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:'Montserrat',sans-serif;"><tr><td style="font-family:'Montserrat',sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.unlayer.com" style="height:37px; v-text-anchor:middle; width:202px;" arcsize="67.5%" stroke="f" fillcolor="#00beff"><w:anchorlock/><center style="color:#000000;font-family:'Montserrat',sans-serif;"><![endif]-->
-                                                    <a href="{{ route("verifyAccount", $token->token()) }}" target="_blank" class="v-size-width" style="box-sizing: border-box;display: inline-block;font-family:'Montserrat',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #000000; background-color: #00beff; border-radius: 25px;-webkit-border-radius: 25px; -moz-border-radius: 25px; width:35%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
-                                                        <span style="display:block;padding:10px 20px;line-height:120%;"><p style="font-size: 14px; line-height: 120%;"><strong><span style="font-size: 14px; line-height: 16.8px;">Confirm your account</span></strong></p></span>
-                                                    </a>
-                                                    <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
+                                                <div class="codeContainer">
+                                                    <span class="codeChar">{{ $code[0] }}</span>
+                                                    <span class="codeChar">{{ $code[1] }}</span>
+                                                    <span class="codeChar">{{ $code[2] }}</span>
+                                                    <span class="separator">-</span>
+                                                    <span class="codeChar">{{ $code[3] }}</span>
+                                                    <span class="codeChar">{{ $code[4] }}</span>
+                                                    <span class="codeChar">{{ $code[5] }}</span>
                                                 </div>
-
                                             </td>
                                         </tr>
                                         </tbody>

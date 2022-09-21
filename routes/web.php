@@ -17,25 +17,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/search/{id}', function ($id) {
-    $exercice = Exercice::find($id);
-    dump($exercice);
-    $relations = $exercice->muscleRelations()->get();
-    dump($relations);
-    $muscles = $exercice->muscles()->get();
-    dd($muscles);
-});
-
-Route::get('/', function () {
-
-});
-
-Route::get('/login', function () {
-
-});
-
-Route::get('/verify/{token}', [UserController::class, 'verify'])->name('verifyAccount');
-
-Route::get('/remember', function () {
-
-});

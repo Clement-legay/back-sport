@@ -70,4 +70,9 @@ class User extends Authenticatable
         $this->remember_token = bin2hex(random_bytes(32));
         $this->save();
     }
+
+    public function verificationToken()
+    {
+        return $this->hasOne(VerificationToken::class);
+    }
 }

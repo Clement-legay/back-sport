@@ -8,7 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\String_;
 
 class UserVerification extends Mailable
 {
@@ -35,15 +35,17 @@ class UserVerification extends Mailable
         $token = new VerificationToken(
             [
                 'user_id' => $user->id,
-                'token' => Str::random(32),
+                'token' => rand(100, 999) . rand(100,999),
                 'expires_at' => now()->addHour(),
             ]
         );
 
         $token->save();
 
+        $code = $token->token;
+
         $this->subject('Confirm your account');
 
-        return $this->view('mail.mailVerification', compact('user', 'token'));
+        return $this->view('mail.mailVerification', compact('code'));
     }
 }

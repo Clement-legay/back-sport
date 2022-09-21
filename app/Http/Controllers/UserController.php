@@ -31,29 +31,25 @@ class UserController extends Controller
         //
     }
 
-    public function verify($token): \Illuminate\Http\RedirectResponse
+    public function verify(Request $request)
     {
-
-        $verificationToken = VerificationToken::where('token', base64_decode($token))->first();
-
+        $user = User::find($request->get('user_id'));
+        $verificationToken = $user->verificationToken()->first();
+        $token = $request->get('token');
 
         if ($verificationToken->isValid()) {
-
-            $user = $verificationToken->user->first();
-
-            if ($user) {
-                if ($user->email_verified_at == null) {
+            if ($verificationToken->token === $token) {
                 $user->email_verified_at = now();
                 $user->save();
-                dd('your account is verified');
-                } else {
-                    dd('your account is already verified');
-                }
+                $verificationToken->delete();
+                return response()->json(['message' => 'Account verified successfully.']);
+            } else {
+                return response()->json(['message' => 'Invalid token.'], 401);
             }
-
-            dd('user not found');
         } else {
-            dd('token expired');
+            $verificationToken->delete();
+            $user->sendVerificationEmail();
+            return response()->json(['message' => 'Token expired, new token sent to your email.'], 401);
         }
 
     }
@@ -66,7 +62,6 @@ class UserController extends Controller
 
             if ($rememberToken->exp > time()) {
                 $user = User::where('remember_token', $rememberToken->token)->first();
-                // generate a new remember token
                 $user->generateRememberToken();
                 return response()->json(['user' => $user, 'remember_token' => $user->rememberToken()]);
             }
@@ -129,6 +124,15 @@ class UserController extends Controller
 
         if (auth()->attempt($credentials, true)) {
             $user = auth()->user();
+
+            if ($user->email_verified_at == null) {
+                $verificationToken = $user->verificationToken()->first();
+
+                if (!$verificationToken->isValid()) {
+                    $verificationToken->delete();
+                    $user->sendVerificationEmail();
+                }
+            }
 
             $token = $user->rememberToken();
 

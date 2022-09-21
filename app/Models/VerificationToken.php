@@ -24,9 +24,4 @@ class VerificationToken extends Model
     {
         return $this->expires_at > now();
     }
-
-    public function token()
-    {
-        return base64_encode($this->token);
-    }
 }
