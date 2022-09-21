@@ -33,11 +33,15 @@ class UserController extends Controller
 
     public function verify($token): \Illuminate\Http\RedirectResponse
     {
+
         $verificationToken = VerificationToken::where('token', base64_decode($token))->first();
 
 
         if ($verificationToken->isValid()) {
-            $user = User::where('remember_token', )->first();
+            $user = $verificationToken->user->first();
+
+            dd($user);
+
 
             if ($user) {
                 if ($user->email_verified_at == null) {
