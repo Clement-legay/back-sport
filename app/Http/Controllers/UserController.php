@@ -36,11 +36,11 @@ class UserController extends Controller
 
         $verificationToken = VerificationToken::where('token', base64_decode($token))->first();
 
-
-        if ($verificationToken->isValid()) {
             $user = $verificationToken->user->first();
 
             dd($user);
+
+        if ($verificationToken->isValid()) {
 
 
             if ($user) {
