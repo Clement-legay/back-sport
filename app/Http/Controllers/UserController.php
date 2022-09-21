@@ -129,16 +129,14 @@ class UserController extends Controller
 
         if (auth()->attempt($credentials, true)) {
             $user = auth()->user();
-            if ($user->email_verified_at == null) {
-                return response()->json(['message' => 'Please verify your email.'], 401);
-            } else {
-                $token = $user->rememberToken();
 
-                return response()->json([
-                    'user' => $user,
-                    'remember_token' => $token,
-                ]);
-            }
+            $token = $user->rememberToken();
+
+            return response()->json([
+                'user' => $user,
+                'remember_token' => $token,
+            ]);
+
         } else {
             return response()->json(['message' => 'Invalid credentials.'], 401);
         }
