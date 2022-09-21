@@ -63,6 +63,15 @@ class UserController extends Controller
             if ($rememberToken->exp > time()) {
                 $user = User::where('remember_token', $rememberToken->token)->first();
                 $user->generateRememberToken();
+
+                if ($user->email_verified_at == null) {
+                    $verificationToken = $user->verificationToken()->first();
+                    if (!$verificationToken->isValid()) {
+                        $verificationToken->delete();
+                        $user->sendVerificationEmail();
+                    }
+                }
+
                 return response()->json(['user' => $user, 'remember_token' => $user->rememberToken()]);
             }
         }
